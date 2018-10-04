@@ -94,7 +94,7 @@ exports.updatePost = (req, res, next) => {
         }
     }
 
-    post.update({_id: req.body.id}, {$set: updatedInfo})
+    post.update({_id: req.params.id}, {$set: updatedInfo})
         .exec()
         .then(result => {
             res.status(200).json({
