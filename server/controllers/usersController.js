@@ -164,8 +164,6 @@ exports.deleteUser = (req, res, next) => {
 
 exports.checkUserStatus = (req, res, next) => {
     const token = req.params.token;
-    console.log("token");
-    console.log(token);
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
     if(decoded) {
         return res.json({
