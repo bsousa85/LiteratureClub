@@ -1,0 +1,10 @@
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const REGISTER_USER = 'REGISTER_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const CHECK_USER = 'CHECK_USER';
+export const DELETE_USER = 'DELETE_USER';
+export const GET_POSTS = 'GET_POSTS';
+export const ADD_POST = 'ADD_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const POSTS_LOADING = 'POSTS_LOADING';
