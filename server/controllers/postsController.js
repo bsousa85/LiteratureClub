@@ -3,7 +3,9 @@ const post     = require('../models/postModel');
 
 exports.getAllPosts = (req, res, next) => {
     post.find()
+        .populate({path :'comment', select: "user text", populate : {path : 'user', select: "username email"}})
         .sort({ time : -1})
+        .exec()
         .then(data => {
             var response = data.map(posts => {
                 return {
@@ -13,23 +15,10 @@ exports.getAllPosts = (req, res, next) => {
                     category: posts.category,
                     author: posts.author,
                     votes: posts.votes,
-                    time: posts.time
+                    time: posts.time,
+                    comment: posts.comment
                 }
             })
-            /*var response = {
-                //posts_count: data.length,
-                all_posts : data.map(posts => {
-                    return {
-                        _id : posts._id,
-                        title: posts.title,
-                        text: posts.text,
-                        category: posts.category,
-                        author: posts.author,
-                        votes: posts.votes,
-                        time: posts.time
-                    }
-                })
-            } */
             res.status(200).json(response);
         })
         .catch(err => {
@@ -62,6 +51,7 @@ exports.newPost = (req, res, next) => {
 
 exports.getPost = (req, res, next) => {
     post.find({_id: req.params.id})
+        .populate({path : "comment", select : " user text", populate : {path : "user", select : "username email"}})
         .exec()
         .then(data => {
             var response = data.map(info => {
@@ -72,7 +62,8 @@ exports.getPost = (req, res, next) => {
                     category: info.category,
                     author: info.author,
                     votes: info.votes,
-                    time: info.time
+                    time: info.time,
+                    comment: info.comment
                 }
             });
             res.status(200).json(response);
@@ -85,27 +76,43 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-    var updatedInfo = {};
-    for(var info in req.body) {
-        if(req.body.hasOwnProperty(info)) {
-            updatedInfo[info] = req.body[info];
-            console.log(info);
-            console.log(updatedInfo[info]);
-        }
+    if(req.body.comment) {
+        var comment = req.body.comment;
+        post.update({_id: req.params.id}, {$push : {comment : comment}})
+            .exec()
+            .then(result => {
+                res.json({
+                    message: "Post updated"
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                });
+            });
     }
-
-    post.update({_id: req.params.id}, {$set: updatedInfo})
-        .exec()
-        .then(result => {
-            res.status(200).json({
-                message: "Post updated"
+    else {
+        var updatedInfo = {};
+        for(var info in req.body) {
+            if(req.body.hasOwnProperty(info)) {
+                updatedInfo[info] = req.body[info];
+                console.log(info);
+                console.log(updatedInfo[info]);
+            }
+        }
+        post.update({_id: req.params.id}, {$set: updatedInfo})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: "Post updated"
+                });
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                });
             });
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            });
-        });
+        }
 };
 
 exports.deletePost = (req, res, next) => {
