@@ -64,9 +64,3 @@ export const checkUserStatus = (token) => dispatch => {
             }
         });
 }
-
-
-/* dispatch({
-            type: LOGIN_USER,
-            payload: res.data
-        })*/
