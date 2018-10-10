@@ -5,7 +5,6 @@ export const loginUser = (user) => dispatch => {
     axios
         .post('users/login', user)
         .then(res => {
-            console.log(res.data.token);
             if(res.data.token) {
                 dispatch({
                     type: LOGIN_USER,

@@ -69,7 +69,6 @@ exports.addComment = (req, res, next) => {
 
 exports.updateComment = (req, res, next) => {
     const text = req.body.text;
-    console.log(text);
     comment.update({_id: req.params.id}, {$set: {text : text}})
            .exec()
            .then(result => {

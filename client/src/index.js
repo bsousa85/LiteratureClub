@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import NavBar from './components/AppNavbar';
+import createPost from './components/createPost';
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -18,7 +19,8 @@ ReactDOM.render(
                     <NavBar />
                     <Route path="/" exact component={Home} />
                     <Route path="/Login" component={Login} />
-                    <Route path="/Register"  component={Register} />
+                    <Route path="/Register" component={Register} />
+                    <Route path="/newPost" component={createPost} />
                 </div>
             </BrowserRouter>
         </PersistGate>

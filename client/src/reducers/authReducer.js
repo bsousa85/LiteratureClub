@@ -19,7 +19,6 @@ export default function(state = initialState, action) {
                 authenticated : true
             }
         case LOGIN_ERROR:
-        console.log(action.payload);
             return {
                 ...state,
                 errorMessage: action.payload,

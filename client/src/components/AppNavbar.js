@@ -34,6 +34,8 @@ class AppNavbar extends Component {
             return(
                 <Nav className="ml-auto" navbar>
                     <NavItem>
+                        <Link to="/newPost">create Post</Link>
+                        <span> ... </span>
                         <Link to="Login">Welcome, {this.props.user} </Link>
                         <span> / </span>
                         <Link to="/" onClick={this.logout}>Log Out</Link>

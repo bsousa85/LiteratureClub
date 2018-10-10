@@ -5,8 +5,7 @@ export const getPosts = () => dispatch => {
     dispatch(setPostsLoading());
     axios
         .get('/posts/')
-        .then(res => 
-            dispatch({
+        .then(res => dispatch({
                 type: GET_POSTS,
                 payload: res.data
             }));
@@ -19,11 +18,13 @@ export const deletePost = (id) => {
     };
 };
 
-export const addPost = (post) => {
-    return {
-        type: ADD_POST,
-        payload: post
-    };
+export const addPost = (post) => dispatch => {
+    axios
+        .post('/posts/newPost', post)
+        .then(res => dispatch({
+            type: ADD_POST,
+            payload: res.data
+        }));
 };
 
 export const setPostsLoading = () => {

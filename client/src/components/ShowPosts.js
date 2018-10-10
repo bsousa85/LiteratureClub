@@ -18,7 +18,7 @@ class ShowPosts extends Component {
       <Container>
           <ListGroup>
               <TransitionGroup className="show-posts">
-                {posts.map(({ id, title, text, category, votes, time}) => (
+                {posts.map(({ id, title, text, category, votes, time, comment}) => (
                     <CSSTransition key={id} timeout={500} classNames="fade">
                         <Container>
                             <ListGroupItem>
@@ -36,6 +36,16 @@ class ShowPosts extends Component {
                             <ListGroupItem>
                                 {time}
                             </ListGroupItem>
+                            {comment.map(({user, text}) => (
+                                <Container>
+                                    <ListGroupItem>
+                                        {user.username}
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        {text}
+                                    </ListGroupItem>
+                                </Container>
+                            ))}
                             <br />
                             <br />
                         </Container>
