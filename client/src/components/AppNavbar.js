@@ -5,13 +5,13 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,NavItem,
-    Container
+    Container,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
 import { PropTypes } from 'prop-types';
-import '../span.css';
+import '../Styles/navbar.css';
 
 class AppNavbar extends Component {
 
@@ -34,11 +34,13 @@ class AppNavbar extends Component {
             return(
                 <Nav className="ml-auto" navbar>
                     <NavItem>
-                        <Link to="/newPost">create Post</Link>
-                        <span> ... </span>
-                        <Link to="Login">Welcome, {this.props.user} </Link>
-                        <span> / </span>
-                        <Link to="/" onClick={this.logout}>Log Out</Link>
+                        <Link className="link" to="Login">Welcome, {this.props.user} </Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link className="link" to="/newPost">create Post</Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link className="link" to="/" onClick={this.logout}>Log Out</Link>
                     </NavItem>
                 </Nav>
             )
@@ -47,9 +49,10 @@ class AppNavbar extends Component {
             return(
                 <Nav className="ml-auto" navbar>
                     <NavItem>
-                        <Link to="Login">Login</Link>
-                        <span> / </span>
-                        <Link to="Register">Register</Link>
+                        <Link className="link" to="Login">Login </Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link className="link" to="Register">Register</Link>
                     </NavItem>
                 </Nav>
             )
