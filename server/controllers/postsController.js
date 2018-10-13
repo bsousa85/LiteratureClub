@@ -3,7 +3,7 @@ const post     = require('../models/postModel');
 
 exports.getAllPosts = (req, res, next) => {
     post.find()
-        .populate({path :'comment', select: "user text", populate : {path : 'user', select: "username email"}})
+        .populate({path :'comment', select: "user text"})
         .sort({ time : -1})
         .exec()
         .then(data => {
@@ -27,6 +27,33 @@ exports.getAllPosts = (req, res, next) => {
             });
         });
 };
+
+exports.getUserPosts = (req, res, next) => {
+    post.find({author: req.params.user})
+        .populate({path :'comment', select: "user text"})
+        .sort({ time : -1})
+        .exec()
+        .then(data => {
+            var response = data.map(posts => {
+                return {
+                    _id : posts._id,
+                    title: posts.title,
+                    text: posts.text,
+                    category: posts.category,
+                    author: posts.author,
+                    votes: posts.votes,
+                    time: posts.time,
+                    comment: posts.comment
+                }
+            });
+            res.json(response);
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            });
+        });
+}
 
 exports.newPost = (req, res, next) => {
     const newPost = new post({
@@ -76,7 +103,7 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-    if(req.body.comment) {
+    /*if(req.body.comment) {
         var comment = req.body.comment;
         post.update({_id: req.params.id}, {$push : {comment : comment}})
             .exec()
@@ -90,14 +117,11 @@ exports.updatePost = (req, res, next) => {
                     error: err
                 });
             });
-    }
-    else {
+    } */
         var updatedInfo = {};
         for(var info in req.body) {
             if(req.body.hasOwnProperty(info)) {
                 updatedInfo[info] = req.body[info];
-                console.log(info);
-                console.log(updatedInfo[info]);
             }
         }
         post.update({_id: req.params.id}, {$set: updatedInfo})
@@ -112,7 +136,6 @@ exports.updatePost = (req, res, next) => {
                     error: err
                 });
             });
-        }
 };
 
 exports.deletePost = (req, res, next) => {
@@ -127,7 +150,7 @@ exports.deletePost = (req, res, next) => {
             res.status(500).json({
                 error: err
             });
-        });
+        }); 
 };
 
 

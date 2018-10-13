@@ -14,7 +14,7 @@ exports.getUsers = (req, res, next) => {
                     return {
                         _id : data._id,
                         username : data.username,
-                        email : data.email,
+                        email : data.email
                     }
                 })
             };
@@ -77,7 +77,6 @@ exports.signup = (req, res, next) => {
                         newUser
                             .save()
                             .then(result => {
-                                console.log(result);
                                 res.status(201).json({
                                     message: 'User created successfully'
                                 });
@@ -131,7 +130,8 @@ exports.login = (req, res, next) => {
                     return res.json({
                         message: 'Auth successful',
                         token: token,
-                        user: data[0].username
+                        user: data[0].username,
+                        userID: data[0]._id
                     });
                 }
                 res.json({
@@ -140,7 +140,52 @@ exports.login = (req, res, next) => {
             });
         })
         .catch(err => {
-            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+}
+
+exports.updateUser = (req, res, next) => {
+    user.find({ _id: req.params.id})
+        .exec()
+        .then(data => {
+            if(req.body.password) {
+                bcrypt.hash(req.body.password, 15, (err, hash) => {
+                    if(err) {
+                        return res.status(500).json({
+                            error: "could not hash"
+                        });
+                    }
+                    else {
+                        var updatedInfo = {};
+                        for(var info in req.body) {
+                            if(req.body.hasOwnProperty(info)) {
+                                if(info === 'password') {
+                                    updatedInfo[info] = hash;
+                                }
+                                else {
+                                    updatedInfo[info] = req.body[info];
+                                }
+                            }
+                        }
+                        user.update( {_id: req.params.id}, {$set: updatedInfo})
+                            .exec()
+                            .then(result => {
+                                res.json({
+                                    message: "User info updated"
+                                });
+                            })
+                            .catch(err => {
+                                res.status(500).json({
+                                    error: err
+                                });
+                            });
+                    }
+                });
+            }
+        })
+        .catch(err => {
             res.status(500).json({
                 error: err
             });
@@ -164,12 +209,12 @@ exports.deleteUser = (req, res, next) => {
 
 exports.checkUserStatus = (req, res, next) => {
     const token = req.params.token;
-    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-    if(decoded) {
+    const verified = jwt.verify(token, process.env.TOKEN_KEY);
+    if(verified) {
         return res.json({
             message: 'User Already Authenticated',
             token: token,
-            username: decoded.user
+            username: verified.user
         });
     }
     else {

@@ -5,6 +5,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import NavBar from './components/AppNavbar';
 import createPost from './components/createPost';
+import userPage  from './components/userPage';
+import editPost from './components/editPost';
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -21,6 +23,8 @@ ReactDOM.render(
                     <Route path="/Login" component={Login} />
                     <Route path="/Register" component={Register} />
                     <Route path="/newPost" component={createPost} />
+                    <Route path="/userPage" component={userPage} />
+                    <Route path="/editPost" component={editPost} />
                 </div>
             </BrowserRouter>
         </PersistGate>

@@ -1,8 +1,9 @@
-import { GET_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING } from '../actions/types';
+import { GET_POSTS, GET_USER_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING, UPDATE_POST } from '../actions/types';
 
 
 const initialState = {
     posts: [],
+    userPosts: [],
     loading: false,
     message: ""
 };
@@ -17,7 +18,8 @@ export default function(state=initialState, action) {
             }
         case DELETE_POST:
             return {
-                ...state
+                ...state,
+                message: action.payload.message
             }
         case ADD_POST:
             return {
@@ -30,6 +32,17 @@ export default function(state=initialState, action) {
                 ...state,
                 loading: true
             }
+        case GET_USER_POSTS:
+            return {
+                ...state,
+                userPosts: action.payload,
+                loading: false
+            }
+        case UPDATE_POST:
+        return {
+            ...state,
+            message: action.payload.message
+        }
         default:
             return state;
     }

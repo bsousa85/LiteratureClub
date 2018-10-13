@@ -3,7 +3,6 @@ const comment  = require('../models/commentModel');
 
 exports.getAllComments = (req, res, next) => {
     comment.find()
-           .populate('user', "username email")
            .populate('post')
            .exec()
            .then(data => {
@@ -54,12 +53,14 @@ exports.addComment = (req, res, next) => {
         text: req.body.text,
         post: req.body.post
     });
+    req.id = newComment._id;
     newComment.save()
               .then(result => {
-                  res.json({
+                  /*res.json({
                       message: 'Comment added successfully'
-                  });
-              })
+                  }); */
+                  next();
+              }) 
               .catch(err => {
                   res.json({
                       error: err

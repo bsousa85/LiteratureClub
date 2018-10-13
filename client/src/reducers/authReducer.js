@@ -1,9 +1,10 @@
-import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER } from '../actions/types';
+import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER } from '../actions/types';
 
 
 const initialState = {
     username: "",
     message: "",
+    userID: "",
     errorMessage: "",
     authenticated: false
 }
@@ -16,12 +17,13 @@ export default function(state = initialState, action) {
                 ...state,
                 message: action.payload.message,
                 username: action.payload.user,
+                userID: action.payload.userID,
                 authenticated : true
             }
         case LOGIN_ERROR:
             return {
                 ...state,
-                errorMessage: action.payload,
+                errorMessage: action.payload.message,
                 authenticated : false
             }
         case REGISTER_USER:
@@ -38,6 +40,11 @@ export default function(state = initialState, action) {
         case DELETE_USER:
             return {
                 ...state
+            }
+        case UPDATE_USER:
+            return {
+                ...state,
+                message: action.payload.message
             }
         case CHECK_USER:
             return {

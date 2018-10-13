@@ -36,6 +36,7 @@
 }
 
 #time {
+    text-align:center;
     display: inline-block;
     font-size: 12px;
     position: relative;
@@ -58,6 +59,25 @@
 #comment-text {
     display: inline-block;
     font-size: 12px;
+}
+
+textarea {
+    width: 300px;
+    outline: none;
+    height: 30px;
+    border-radius: 20px;
+    padding: 10px;
+    font-family: 'Sniglet', cursive;
+    font-size: 1em;
+    color: #676767;
+    transition: border 0.5s;
+    border: solid 3px #98d4f3;
+    box-sizing: border-box; 
+}
+
+div[contenteditable] {
+    overflow: auto;
+    max-height: 500px;
 }
 
 /*

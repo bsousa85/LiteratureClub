@@ -8,17 +8,11 @@ router.post('/signup', userController.signup);
 
 router.post('/login', userController.login);
 
+router.put('/:id', userController.updateUser);
+
 router.post('/checkAuth/:token', userController.checkUserStatus);
 
 router.delete('/delete/:id', userController.deleteUser);
 
 
 module.exports = router;
-
-/*
-"title" : "The Last Wish",
-	"text" : "It was a nice summer brise",
-	"category" : "Fiction/Fantasy",
-    "author" : "Bruno Sousa",
-    
-*/

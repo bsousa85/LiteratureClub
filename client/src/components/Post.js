@@ -5,6 +5,21 @@ import { Card, CardSubtitle, CardBody, CardTitle, CardText, Button, Input } from
 
 export class Post extends Component {
   
+  onClick = () => {
+    this.props.onSubmit(this.props.posts._id);
+  }
+
+  showAddComment() {
+    if(this.props.auth) {
+      return (
+                <div >
+                    <p id="comment-user">{this.props.user}</p>
+                    <textarea onChange={this.props.onChange} name="text" placeholder="Write some feedback!" />
+                    <button onClick={this.onClick}>Submit</button>
+                </div>
+      )
+    }
+  }
 
   render() {
     return (
@@ -25,11 +40,11 @@ export class Post extends Component {
               </div>
                 {this.props.posts.comment.map(({user, text}) => (
                   <div className="comment-section">
-                      <p id="comment-user">{user.username} : </p>
+                      <p id="comment-user">{user} : </p>
                       <p id="comment-text">{text}</p>
                   </div>
-                  
                 ))}
+                {this.showAddComment()}
             </Card>
           </div>
     )
@@ -37,40 +52,3 @@ export class Post extends Component {
 }
 
 export default Post;
-
-/*
-
-<Container className="post">
-            <Row>
-              <Col>
-                <h1>{this.props.posts.title}</h1>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <h5>{this.props.posts.category}</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <h6>Author : {this.props.posts.author}</h6>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <p className="content">{this.props.posts.text}</p>
-              </Col>
-            </Row>
-              <p>{this.props.posts.votes}</p>
-              <p>{this.props.posts.time}</p>
-              {this.props.posts.comment.map(({user, text}) => (
-                  <div> 
-                    <p>{user.username}</p>
-                    <p>{text}</p>
-                  </div>
-              ))}
-          </Container>
-
-          <input type="image" src="images/likebtn.pgn" height="30" width="30" />
-
-          */

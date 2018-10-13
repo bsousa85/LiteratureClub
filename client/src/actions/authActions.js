@@ -1,4 +1,4 @@
-import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER } from './types';
+import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER } from './types';
 import axios from 'axios';
 
 export const loginUser = (user) => dispatch => {
@@ -41,7 +41,16 @@ export const deleteUser = (id) => dispatch => {
         .delete(`users/delete/${id}`)
         .then(res => dispatch({
             type: DELETE_USER,
-            payload: id
+            payload: res.data
+        }));
+}
+
+export const updateUser = (id, user) => dispatch => {
+    axios
+        .put(`/users/${id}`, user)
+        .then(res => dispatch({
+            type: UPDATE_USER,
+            payload: res.data
         }));
 }
 
