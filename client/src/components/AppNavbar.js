@@ -17,9 +17,7 @@ class AppNavbar extends Component {
 
     componentDidMount() {
         // let user = this.props.user;
-        // console.log("username : " + this.props.user);
         // const token = localStorage.getItem(this.props.user);
-        // console.log("token : " + token);
         // if(this.props.auth) {
         //     this.props.checkUserStatus(user);
         // }
