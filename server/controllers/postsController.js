@@ -105,14 +105,14 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-    if(req.body.likes && req.body.likedBy) {
+    if(req.body.likedBy) {
         post.find({ _id: req.params.id })
             .exec()
             .then(data => {
-                var likes = data.likes;
-                likes++;
-                var likedBy = data.likedBy;
-                post.update({ _id: req.params.id}, {$set : {likes: likes}}, {$push : {likedBy : likedBy} })
+                var newlikes = data[0].likes;
+                newlikes++;
+                var likedBy = req.body.likedBy;
+                post.update({ _id: req.params.id}, {$set : {likes: newlikes}, $push : {likedBy : likedBy} })
                     .exec()
                     .then(result => {
                         res.json({
@@ -124,13 +124,13 @@ exports.updatePost = (req, res, next) => {
                             error: err
                         });
                     });
-            })
+            }) 
             .catch(err => {
                 res.status(500).json({
                     error: err
                 });
-            });
-    }
+            }); 
+    } 
     else {
         var updatedInfo = {};
         for(var info in req.body) {
@@ -149,9 +149,42 @@ exports.updatePost = (req, res, next) => {
                 res.status(500).json({
                     error: err
                 });
-            });
-    }
+            }); 
+    } 
 };
+
+exports.decrementLikes = (req, res, next) => {
+    post.find({ _id: req.params.id })
+        .exec()
+        .then(data => {
+            var newLikes = data[0].likes;
+            newLikes--;
+            var likedBy = req.body.likedBy;
+            var newLikedBy = data[0].likedBy.map((id) => {
+                if(id === likedBy) {
+                    var index = data[0].likedBy.indexOf(req.body.likedBy);
+                    data.splice(index, 1);
+                }
+            });
+            post.update({ _id: req.params.id}, {$set : {likes : newLikes, likedBy: newLikedBy}})
+                .exec()
+                .then(result => {
+                    res.json({
+                        message: "Like section updated"
+                    });
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        error: err
+                    });
+                }); 
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            }); 
+        }); 
+}
 
 exports.deletePost = (req, res, next) => {
     post.remove({_id: req.params.id})

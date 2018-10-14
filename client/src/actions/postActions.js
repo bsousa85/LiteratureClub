@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING, GET_USER_POSTS, UPDATE_POST } from './types';
+import { GET_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING, GET_USER_POSTS, UPDATE_POST, UPDATE_LIKES } from './types';
 
 export const getPosts = () => dispatch => {
     dispatch(setPostsLoading());
@@ -44,6 +44,24 @@ export const updatePost = (id, post) => dispatch => {
         .put(`/posts/${id}`, post)
         .then(res => dispatch({
             type: UPDATE_POST,
+            payload: res.data
+        }));
+}
+
+export const incrementLikes = (id, post) => dispatch => {
+    axios
+        .put(`/posts/${id}`, post)
+        .then(res => dispatch({
+            type: UPDATE_LIKES,
+            payload: res.data
+        }));
+}
+
+export const decrementLikes = (id, post) => dispatch => {
+    axios
+        .put(`/posts/like/${id}`, post)
+        .then(res => dispatch({
+            type: UPDATE_LIKES,
             payload: res.data
         }));
 }

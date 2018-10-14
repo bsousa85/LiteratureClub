@@ -9,15 +9,27 @@ export class Post extends Component {
     this.props.onSubmit(this.props.posts._id);
   }
 
-  onclick2 = () => {
-    //this.props.updatePost(this.props.posts._id)
+  checkLike = () => {
+    const { likedBy } = this.props.posts;
+    const { userID } = this.props.user;
+    var equal;
+    likedBy.map(like => {
+      if(like._id === userID) {
+        equal = true;
+      }
+    });
+    if(equal) {
+      return true;
+    }
+    return false;
+
   }
 
   showAddComment() {
     if(this.props.auth) {
       return (
                 <div >
-                    <p id="comment-user">{this.props.user}</p>
+                    <p id="comment-user">{this.props.user.username}</p>
                     <textarea onChange={this.props.onChange} name="text" placeholder="Write some feedback!" />
                     <button onClick={this.onClick}>Submit</button>
                 </div>
@@ -26,10 +38,17 @@ export class Post extends Component {
   }
 
   showLikeButton() {
-    if(this.props.auth && (!this.props.liked)) {
+    if(this.props.auth && (!this.checkLike())) {
       return (
-        <a onClick={this.onclick2}>
+        <a onClick={() => {this.props.onLikeClick(this.props.posts._id)}}>
           <img className="like" src="images/likebtn.png" height="30" width="30" />
+        </a>
+      )
+    }
+    else {
+      return (
+        <a onClick={() => {this.props.onDislikeClick(this.props.posts._id)}}>
+          <img className="like" src="images/dislikebtn.png" height="30" width="30" />
         </a>
       )
     }

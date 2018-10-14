@@ -1,4 +1,4 @@
-import { GET_POSTS, GET_USER_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING, UPDATE_POST } from '../actions/types';
+import { GET_POSTS, GET_USER_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING, UPDATE_POST, UPDATE_LIKES } from '../actions/types';
 
 
 const initialState = {
@@ -39,6 +39,11 @@ export default function(state=initialState, action) {
                 loading: false
             }
         case UPDATE_POST:
+        return {
+            ...state,
+            message: action.payload.message
+        }
+        case UPDATE_LIKES:
         return {
             ...state,
             message: action.payload.message

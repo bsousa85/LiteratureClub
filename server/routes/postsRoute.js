@@ -13,6 +13,8 @@ router.post('/newPost', postController.newPost);
 
 router.put('/:id', postController.updatePost);
 
+router.put('/like/:id', postController.decrementLikes);
+
 router.delete('/delete/:id', deletePostComments, postController.deletePost);
 
 module.exports = router;
