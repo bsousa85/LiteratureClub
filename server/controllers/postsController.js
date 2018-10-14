@@ -4,6 +4,7 @@ const post     = require('../models/postModel');
 exports.getAllPosts = (req, res, next) => {
     post.find()
         .populate({path :'comment', select: "user text"})
+        .populate({path:'likedBy', select: "user _id"})
         .sort({ time : -1})
         .exec()
         .then(data => {
@@ -14,7 +15,8 @@ exports.getAllPosts = (req, res, next) => {
                     text: posts.text,
                     category: posts.category,
                     author: posts.author,
-                    votes: posts.votes,
+                    likes: posts.likes,
+                    likedBy: posts.likedBy,
                     time: posts.time,
                     comment: posts.comment
                 }
@@ -41,7 +43,7 @@ exports.getUserPosts = (req, res, next) => {
                     text: posts.text,
                     category: posts.category,
                     author: posts.author,
-                    votes: posts.votes,
+                    likes: posts.likes,
                     time: posts.time,
                     comment: posts.comment
                 }
@@ -88,7 +90,7 @@ exports.getPost = (req, res, next) => {
                     text: info.text,
                     category: info.category,
                     author: info.author,
-                    votes: info.votes,
+                    likes: info.likes,
                     time: info.time,
                     comment: info.comment
                 }
@@ -103,21 +105,33 @@ exports.getPost = (req, res, next) => {
 };
 
 exports.updatePost = (req, res, next) => {
-    /*if(req.body.comment) {
-        var comment = req.body.comment;
-        post.update({_id: req.params.id}, {$push : {comment : comment}})
+    if(req.body.likes && req.body.likedBy) {
+        post.find({ _id: req.params.id })
             .exec()
-            .then(result => {
-                res.json({
-                    message: "Post updated"
-                });
+            .then(data => {
+                var likes = data.likes;
+                likes++;
+                var likedBy = data.likedBy;
+                post.update({ _id: req.params.id}, {$set : {likes: likes}}, {$push : {likedBy : likedBy} })
+                    .exec()
+                    .then(result => {
+                        res.json({
+                            message: "Like section updated"
+                        });
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
             })
             .catch(err => {
                 res.status(500).json({
                     error: err
                 });
             });
-    } */
+    }
+    else {
         var updatedInfo = {};
         for(var info in req.body) {
             if(req.body.hasOwnProperty(info)) {
@@ -136,6 +150,7 @@ exports.updatePost = (req, res, next) => {
                     error: err
                 });
             });
+    }
 };
 
 exports.deletePost = (req, res, next) => {

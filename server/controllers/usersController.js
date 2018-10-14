@@ -183,6 +183,26 @@ exports.updateUser = (req, res, next) => {
                     }
                 });
             }
+            else {
+                var updatedInfo = {};
+                for(var info in req.body) {
+                    if(req.body.hasOwnProperty(info)) {
+                        updatedInfo[info] = req.body[info];
+                    }
+                }
+                user.update( { _id: req.params.id}, {$set: updatedInfo})
+                    .exec()
+                    .then(result => {
+                        res.json({
+                            message: "User info updated"
+                        });
+                    })
+                    .catch(err => {
+                        res.status(500).json({
+                            error: err
+                        });
+                    });
+            }
         })
         .catch(err => {
             res.status(500).json({

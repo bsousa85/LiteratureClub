@@ -9,6 +9,10 @@ export class Post extends Component {
     this.props.onSubmit(this.props.posts._id);
   }
 
+  onclick2 = () => {
+    //this.props.updatePost(this.props.posts._id)
+  }
+
   showAddComment() {
     if(this.props.auth) {
       return (
@@ -17,6 +21,16 @@ export class Post extends Component {
                     <textarea onChange={this.props.onChange} name="text" placeholder="Write some feedback!" />
                     <button onClick={this.onClick}>Submit</button>
                 </div>
+      )
+    }
+  }
+
+  showLikeButton() {
+    if(this.props.auth && (!this.props.liked)) {
+      return (
+        <a onClick={this.onclick2}>
+          <img className="like" src="images/likebtn.png" height="30" width="30" />
+        </a>
       )
     }
   }
@@ -34,8 +48,8 @@ export class Post extends Component {
                 <CardText className="content">{this.props.posts.text}</CardText>
               </CardBody>
               <div className="like-section">
-                <input className="like" type="image" src="images/likebtn.png" height="30" width="30" />
-                <p id="votes">{this.props.posts.votes} people like this post</p>
+                {this.showLikeButton()}
+                <p id="votes">{this.props.posts.likes} people like this post</p>
                 <p id="time">posted on, {this.props.posts.time}</p>
               </div>
                 {this.props.posts.comment.map(({user, text}) => (

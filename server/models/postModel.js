@@ -6,7 +6,8 @@ const postSchema = mongoose.Schema({
     text: {type: String, required: true},
     category: {type: String},
     author: {type: String},
-    votes: {type: Number, default: 0},
+    likes: {type: Number, default: 0},
+    likedBy: [{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
     time: {type: Date, default: Date.now},
     comment: [{type: mongoose.Schema.Types.ObjectId, ref:'Comment'}]
 });
