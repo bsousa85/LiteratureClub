@@ -4,5 +4,9 @@
 }
 
 .link:hover {
-    color: grey;
+    color: black;
+}
+
+.colorNav:hover {
+    background-color: #ddd;
 }

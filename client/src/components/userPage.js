@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getUserPosts, deletePost } from '../actions/postActions';
-import { updateUser } from '../actions/authActions';
+import { updateUser, resetMessage, resetErrorMessage } from '../actions/authActions';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Button, Col, Container, Form,
-FormGroup, Label, Input, ListGroup } from 'reactstrap';
+FormGroup, Label, Input, ListGroup, Alert } from 'reactstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -48,6 +48,26 @@ export class userPage extends Component {
         }
         this.props.updateUser(userID, userInfo);
       }
+
+      showUserMessage = () => {
+        if(this.props.message) {
+          return(
+            <div>
+              <Alert color="success">{this.props.message}</Alert>
+            </div>
+          )
+        }
+        else if(this.props.errorMessage) {
+          return(
+            <div>
+              <Alert color="danger">{this.props.errorMessage}</Alert>
+            </div>
+          )
+        }
+        else {
+          return null;
+        }
+      }
  
   render() {
     const { userPosts } = this.props.post;
@@ -65,7 +85,10 @@ export class userPage extends Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
+              onClick={() => { 
+                this.toggle('2');
+                this.props.message !== '' ? this.props.resetMessage() : null;
+                this.props.errorMessage !== '' ? this.props.resetErrorMessage() : null }}
             >
               My Posts
             </NavLink>
@@ -74,6 +97,7 @@ export class userPage extends Component {
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
           <Container>
+            {this.showUserMessage()}
           <h3>Change your settings</h3>
           <Form className="form" onSubmit={this.onSubmit}>
             <Col>
@@ -99,12 +123,14 @@ export class userPage extends Component {
                     {userPosts.map((post) => (
                             <CSSTransition  timeout={500} classNames="fade">
                                 <Container>
-                                    <Post posts={post} user={this.props.user} userPage={this.state.userPage} />
+                                    <Post posts={post} comments={this.props.comments}  user={this.props.user} userPage={this.state.userPage} />
                                     <Button>
                                         <Link className="link" to={{pathname:"/editPost",
                                         state: {postInfo : post}}}>Edit</Link>
                                     </Button>
-                                    <Button onClick={() => this.deleteUserPost(post._id)}>Delete</Button>
+                                    <Button onClick={() => { 
+                                      if(window.confirm('Are you sure you wish to delete this post?')) 
+                                      this.deleteUserPost(post._id)}}>Delete</Button>
                                     <br />
                                     <br />
                                 </Container>
@@ -122,17 +148,28 @@ export class userPage extends Component {
  
 userPage.PropTypes = {
     getUserPosts: PropTypes.func.isRequired,
+    deletePost: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    resetMessage: PropTypes.func.isRequired,
+    resetErrorMessage: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired,
     user: PropTypes.object,
+    userMessage: PropTypes.object,
+    errorUserMessage: PropTypes.object,
+    postMessage: PropTypes.object,
+    errorPostMessage: PropTypes.object,
 }
 
 
 
 const mapStateToProps = (state) => ({
     post: state.post,
-    user: state.auth
+    user: state.auth,
+    message: state.auth.message,
+    errorMessage: state.auth.errorMessage,
+    comments: state.comment.comments
 });
 
-export default connect(mapStateToProps, { getUserPosts, deletePost, updateUser })(userPage);
+export default connect(mapStateToProps, { getUserPosts, deletePost, updateUser, resetMessage, resetErrorMessage })(userPage);
 
 

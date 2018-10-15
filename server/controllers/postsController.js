@@ -58,6 +58,21 @@ exports.getUserPosts = (req, res, next) => {
 }
 
 exports.newPost = (req, res, next) => {
+    if(!req.body.title) {
+        return res.json({
+            message: 'No Title typed'
+        });
+    }
+    if(!req.body.category) {
+        return res.json({
+            message: 'No Category typed'
+        });
+    }
+    if(!req.body.text) {
+        return res.json({
+            message: 'No Content typed'
+        });
+    }
     const newPost = new post({
         _id: new mongoose.Types.ObjectId(),
         title: req.body.title,
@@ -67,13 +82,14 @@ exports.newPost = (req, res, next) => {
     });
     newPost.save()
            .then(result => {
-               res.status(201).json({
-                   message: 'Post created successfully'
+               res.json({
+                   message: 'Post created successfully',
+                   success: true
                });
            })
            .catch(err => {
-               res.status(500).json({
-                   error: err
+               res.json({
+                   message: 'Couldn\'t create post'
                });
            });
 };
@@ -120,18 +136,33 @@ exports.updatePost = (req, res, next) => {
                         });
                     })
                     .catch(err => {
-                        res.status(500).json({
-                            error: err
+                        res.json({
+                            message: "Error while updating like section. please try again"
                         });
                     });
             }) 
             .catch(err => {
-                res.status(500).json({
+                res.json({
                     error: err
                 });
             }); 
     } 
     else {
+        if(!req.body.title) {
+            return res.json({
+                message: 'No Title typed'
+            });
+        }
+        if(!req.body.category) {
+            return res.json({
+                message: 'No Category typed'
+            });
+        }
+        if(!req.body.text) {
+            return res.json({
+                message: 'No Content typed'
+            });
+        }
         var updatedInfo = {};
         for(var info in req.body) {
             if(req.body.hasOwnProperty(info)) {
@@ -141,13 +172,14 @@ exports.updatePost = (req, res, next) => {
         post.update({_id: req.params.id}, {$set: updatedInfo})
             .exec()
             .then(result => {
-                res.status(200).json({
-                    message: "Post updated"
+                res.json({
+                    message: "Post updated",
+                    success: true
                 });
             })
             .catch(err => {
-                res.status(500).json({
-                    error: err
+                res.json({
+                    message: "Error while updating post. Please try again"
                 });
             }); 
     } 
@@ -157,8 +189,6 @@ exports.decrementLikes = (req, res, next) => {
     post.find({ _id: req.params.id })
         .exec()
         .then(data => {
-            var newLikes = data[0].likes;
-            newLikes--;
             var likedBy = req.body.likedBy;
             var newLikedBy = data[0].likedBy.map((id) => {
                 if(id === likedBy) {
@@ -166,6 +196,10 @@ exports.decrementLikes = (req, res, next) => {
                     data.splice(index, 1);
                 }
             });
+            if(newLikedBy[0] === undefined){
+                newLikedBy = []
+            } 
+            var newLikes = newLikedBy.length;
             post.update({ _id: req.params.id}, {$set : {likes : newLikes, likedBy: newLikedBy}})
                 .exec()
                 .then(result => {
@@ -178,7 +212,7 @@ exports.decrementLikes = (req, res, next) => {
                         error: err
                     });
                 }); 
-        })
+        }) 
         .catch(err => {
             res.status(500).json({
                 error: err
@@ -192,7 +226,7 @@ exports.deletePost = (req, res, next) => {
         .then(result => {
             res.status(200).json({
                 message: 'Post deleted successfully'
-            });
+            }); 
         })
         .catch(err => {
             res.status(500).json({

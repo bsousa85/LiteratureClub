@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Container, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { updatePost } from '../actions/postActions';
+import { updatePost, resetPostRedirect, resetPostMessage, resetPostErrorMessage } from '../actions/postActions';
+import { Redirect } from 'react-router';
 
 class editPost extends Component {
 
@@ -22,10 +23,37 @@ class editPost extends Component {
         this.props.updatePost(id, editedPost);
     }
 
+    showMessage = () => {
+        console.log("message : " + this.props.message);
+        console.log("redirect : " + this.props.redirect);
+        if(this.props.message && this.props.redirect) {
+          return(
+            <div>
+              <Alert color="success">{this.props.message}</Alert>
+              {this.props.resetPostRedirect()}
+              {this.props.resetPostMessage()}
+              {this.props.errorMessage !== '' ? this.props.resetPostErrorMessage() : null}
+              <Redirect to="/userPage" />
+            </div>
+          )
+        }
+        else if(this.props.errorMessage && (!this.props.redirect)) {
+          return(
+            <div>
+              <Alert color="danger">{this.props.errorMessage}</Alert>
+            </div>
+          )
+        }
+        else {
+          return null;
+        }
+      }
+
     render() {
         const { postInfo } = this.props.location.state;
         return(
                 <Container>
+                    {this.showMessage()}
                     <h3>Edit your Post</h3>
                     <Form className="form" onSubmit={this.onSubmit}>
                         <Col>
@@ -55,12 +83,19 @@ class editPost extends Component {
 
 editPost.PropTypes = {
     addPost : PropTypes.func,
+    resetPostErrorMessage: PropTypes.func,
+    resetPostMessage: PropTypes.func,
+    resetPostRedirect: PropTypes.func,
     message : PropTypes.object,
+    errorMEssage: PropTypes.object,
+    user : PropTypes.object
 }
 
 const mapStateToProps = state => ({
-    message: state.comment.message,
-    user: state.auth.username
+    message: state.post.message,
+    errorMessage: state.post.errorMessage,
+    user: state.auth.username,
+    redirect: state.post.redirect
 });
 
-export default connect(mapStateToProps, {updatePost})(editPost);
+export default connect(mapStateToProps, { updatePost, resetPostErrorMessage, resetPostMessage, resetPostRedirect })(editPost);

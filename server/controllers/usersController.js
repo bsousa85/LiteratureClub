@@ -34,36 +34,36 @@ exports.signup = (req, res, next) => {
             if(data.length >= 1) {
                 for(var i=0; i<data.length;i++) {
                     if(data[i].email == req.body.email) {
-                        return res.status(409).json({
+                        return res.json({
                             message: 'Mail already in use'
                         });
                     }
                     if(data[i].username == req.body.username) {
-                        return res.status(409).json({
+                        return res.json({
                             message: 'Username already in use'
                         });
                     }
                 }
             }
             else if(!req.body.username) {
-                return res.status(401).json({
+                return res.json({
                     message: 'No username typed'
                 });
             }
             else if(!req.body.password) {
-                return res.status(401).json({
+                return res.json({
                     message: 'No password typed'
                 });
             }
             else if(!req.body.email) {
-                return res.status(401).json({
+                return res.json({
                     message: 'No email typed'
                 });
             }
             else {
                 bcrypt.hash(req.body.password, 15, (err,hash) => {
                     if(err) {
-                        return res.status(500).json({
+                        return res.json({
                             error: "could not hash"
                         });
                     }
@@ -77,12 +77,13 @@ exports.signup = (req, res, next) => {
                         newUser
                             .save()
                             .then(result => {
-                                res.status(201).json({
-                                    message: 'User created successfully'
+                                res.json({
+                                    message: 'User created successfully',
+                                    success: true
                                 });
                             })
                             .catch(err => {
-                                res.status(500).json({
+                                res.json({
                                     error: "error storing user"
                                 });
                             });
@@ -152,8 +153,8 @@ exports.updateUser = (req, res, next) => {
             if(req.body.password) {
                 bcrypt.hash(req.body.password, 15, (err, hash) => {
                     if(err) {
-                        return res.status(500).json({
-                            error: "could not hash"
+                        return res.json({
+                            message: "Error while hashing password"
                         });
                     }
                     else {
@@ -172,12 +173,13 @@ exports.updateUser = (req, res, next) => {
                             .exec()
                             .then(result => {
                                 res.json({
-                                    message: "User info updated"
+                                    message: "User info updated",
+                                    success: true
                                 });
                             })
                             .catch(err => {
-                                res.status(500).json({
-                                    error: err
+                                res.json({
+                                    message: "Error while updating user info. Please try again"
                                 });
                             });
                     }

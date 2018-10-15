@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { GET_POSTS, ADD_POST, DELETE_POST, POSTS_LOADING, GET_USER_POSTS, UPDATE_POST, UPDATE_LIKES } from './types';
+import { GET_POSTS, ADD_POST, ADD_POST_ERROR, DELETE_POST, POSTS_LOADING, GET_USER_POSTS, UPDATE_POST,
+     UPDATE_POST_ERROR, UPDATE_LIKES, RESET_REDIRECT, RESET_ERRORMESSAGE, RESET_MESSAGE, RESET_LIKED } from './types';
 
 export const getPosts = () => dispatch => {
     dispatch(setPostsLoading());
@@ -26,27 +27,47 @@ export const deletePost = (id) => dispatch => {
         .delete(`/posts/delete/${id}`)
         .then(res => dispatch({
             type: DELETE_POST,
-            payload: res.data
+            payload: id
         }));
 };
 
 export const addPost = (post) => dispatch => {
     axios
         .post('/posts/newPost', post)
-        .then(res => dispatch({
-            type: ADD_POST,
-            payload: res.data
-        }));
+        .then(res => {
+            if(res.data.success) {
+                dispatch({
+                    type: ADD_POST,
+                    payload: res.data
+                });
+            }
+            else {
+                dispatch({
+                    type: ADD_POST_ERROR,
+                    payload: res.data
+                });
+            }
+        });
 };
 
 export const updatePost = (id, post) => dispatch => {
     axios
         .put(`/posts/${id}`, post)
-        .then(res => dispatch({
-            type: UPDATE_POST,
-            payload: res.data
-        }));
-}
+        .then(res => {
+            if(res.data.success) {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: res.data
+                });
+            }
+            else {
+                dispatch({
+                    type: UPDATE_POST_ERROR,
+                    payload: res.data
+                });
+            }
+        });
+};
 
 export const incrementLikes = (id, post) => dispatch => {
     axios
@@ -70,4 +91,28 @@ export const setPostsLoading = () => {
     return {
         type: POSTS_LOADING
     };
+};
+
+export const resetPostRedirect = () => dispatch => {
+    dispatch({
+        type: RESET_REDIRECT
+    });
+};
+
+export const resetPostMessage = () => dispatch => {
+    dispatch({
+        type: RESET_MESSAGE
+    });
+};
+
+export const resetPostErrorMessage = () => dispatch => {
+    dispatch({
+        type: RESET_ERRORMESSAGE
+    });
+};
+
+export const resetLiked = () => dispatch => {
+    dispatch({
+        type: RESET_LIKED
+    });
 };

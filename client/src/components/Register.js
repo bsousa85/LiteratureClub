@@ -1,31 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {Form, FormGroup, Label, Input, Button, Alert, Container, Col} from 'reactstrap';
-import { registerUser } from '../actions/authActions';
+import { registerUser, resetErrorMessage, resetMessage, resetRedirect } from '../actions/authActions';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 
 export class Register extends Component {
-
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      password: "",
-      email: "",
-      redirect: false
-    }
-  }
-
-  showAlert(message) {
-      
-      return (
-        <div>
-          <Alert color="primary">{message}</Alert>
-        </div>
-      )
-  }
 
   onChange = (e) => {
     this.setState({ [e.target.name] : e.target.value})
@@ -42,17 +22,34 @@ export class Register extends Component {
     this.props.registerUser(newUser);
   };
 
-  render() {
-    const { message } = this.props.message;
-    const alert = message === undefined ? <div> </div> : this.showAlert(message);
-    
-     //  if(this.state.redirect) {
-    //    this.setState({ redirect: !this.state.redirect});
-    //     return <Redirect to ="/" />
-    //  } 
+  showMessage = () => {
+    if(this.props.message && this.props.redirect) {
+      return(
+        <div>
+          <Alert color="success">{this.props.message}</Alert>
+          {this.props.resetRedirect()}
+          {this.props.resetMessage()}
+          {this.props.errorMessage !== '' ? this.props.resetErrorMessage() : null}
+          <Redirect to="/Login" />
+        </div>
+      )
+    }
+    else if(this.props.errorMessage && (!this.props.redirect)) {
+      return(
+        <div>
+          <Alert color="danger">{this.props.errorMessage}</Alert>
+        </div>
+      )
+    }
+    else {
+      return null;
+    }
+  }
 
+  render() {
     return (
         <Container>
+          {this.showMessage()}
           <h3>Sign Up</h3>
           <Form className="form" onSubmit={this.onSubmit}>
             <Col>
@@ -75,9 +72,6 @@ export class Register extends Component {
             </Col>
             <Button>Register</Button>
           </Form>
-          <div>
-            {alert}
-          </div>
           </Container>
     )
   }
@@ -85,12 +79,19 @@ export class Register extends Component {
 
 Register.PropTypes = {
   registerUser: PropTypes.func.isRequired,
-  message: PropTypes.object
+  resetMessage: PropTypes.func,
+  resetErrorMessage: PropTypes.func,
+  resetRedirect: PropTypes.func,
+  message: PropTypes.object,
+  ErrorMessage: PropTypes.object,
+  redirect: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-    message: state.auth.message
+    message: state.auth.message,
+    errorMessage: state.auth.errorMessage,
+    redirect: state.auth.redirect
 });
 
 
-export default connect(mapStateToProps, {registerUser})(Register);
+export default connect(mapStateToProps, {registerUser, resetMessage, resetErrorMessage, resetRedirect})(Register);

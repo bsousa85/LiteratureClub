@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { Container, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addPost } from '../actions/postActions';
+import { addPost, resetPostRedirect, resetPostMessage, resetPostErrorMessage } from '../actions/postActions';
+import { Redirect } from 'react-router';
 
 class createPost extends Component {
 
@@ -22,9 +23,34 @@ class createPost extends Component {
         this.props.addPost(newPost);
     }
 
+    showMessage = () => {
+        if(this.props.message && this.props.redirect) {
+            return(
+              <div>
+                <Alert color="success">{this.props.message}</Alert>
+                {this.props.resetPostRedirect()}
+                {this.props.resetPostMessage()}
+                {this.props.errorMessage !== '' ? this.props.resetPostErrorMessage() : null}
+                <Redirect to="/" />
+              </div>
+            )
+          }
+          else if(this.props.errorMessage && (!this.props.redirect)) {
+            return(
+              <div>
+                <Alert color="danger">{this.props.errorMessage}</Alert>
+              </div>
+            )
+          }
+          else {
+            return null;
+          }
+    }
+
     render() {
         return(
                 <Container>
+                    {this.showMessage()}
                     <h3>Create your own Post!</h3>
                     <Form className="form" onSubmit={this.onSubmit}>
                         <Col>
@@ -54,12 +80,20 @@ class createPost extends Component {
 
 createPost.PropTypes = {
     addPost : PropTypes.func,
+    resetPostMessage: PropTypes.func,
+    resetPostErrorMessage: PropTypes.func,
+    resetPostRedirect: PropTypes.func,
     message : PropTypes.object,
+    errorMessage: PropTypes.object,
+    user: PropTypes.object,
+    redirect: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-    message: state.comment.message,
-    user: state.auth.username
+    message: state.post.message,
+    errorMessage: state.post.errorMessage,
+    user: state.auth.username,
+    redirect: state.post.redirect
 });
 
-export default connect(mapStateToProps, {addPost})(createPost);
+export default connect(mapStateToProps, { addPost, resetPostErrorMessage, resetPostMessage, resetPostRedirect })(createPost);

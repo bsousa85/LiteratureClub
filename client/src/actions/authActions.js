@@ -1,5 +1,5 @@
-import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER, RESET_REDIRECT,
-RESET_MESSAGE, RESET_ERRORMESSAGE } from './types';
+import { LOGIN_USER, REGISTER_USER, REGISTER_ERROR, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER, RESET_REDIRECT,
+RESET_MESSAGE, RESET_ERRORMESSAGE, UPDATE_USER_ERROR } from './types';
 import axios from 'axios';
 
 export const loginUser = (user) => dispatch => {
@@ -16,7 +16,7 @@ export const loginUser = (user) => dispatch => {
                 dispatch({
                     type: LOGIN_ERROR,
                     payload: res.data
-                })
+                });
             }
         });
 };
@@ -24,11 +24,20 @@ export const loginUser = (user) => dispatch => {
 export const registerUser = (user) => dispatch => {
     axios
         .post('users/signup', user)
-        .then(res => dispatch({
-            type: REGISTER_USER,
-            payload: res.data
-        }));
-        
+        .then(res => {
+            if(res.data.success) {
+                dispatch({
+                    type: REGISTER_USER,
+                    payload: res.data
+                });
+            }
+            else {
+                dispatch({
+                    type: REGISTER_ERROR,
+                    payload: res.data
+                });
+            } 
+        });
 };
 
 export const logoutUser = () => dispatch => {
@@ -67,10 +76,20 @@ export const deleteUser = (id) => dispatch => {
 export const updateUser = (id, user) => dispatch => {
     axios
         .put(`/users/${id}`, user)
-        .then(res => dispatch({
-            type: UPDATE_USER,
-            payload: res.data
-        }));
+        .then(res => {
+            if(res.data.success) {
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: res.data
+                });
+            }
+            else {
+                dispatch({
+                    type: UPDATE_USER_ERROR,
+                    payload: res.data
+                });
+            }
+        });
 };
 
 export const checkUserStatus = (token) => dispatch => {

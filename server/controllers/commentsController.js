@@ -8,7 +8,7 @@ exports.getAllComments = (req, res, next) => {
            .then(data => {
                 var response = data.map(doc => {
                     return {
-                        id : doc._id,
+                        id: doc._id,
                         text: doc.text,
                         user: doc.user,
                         post: doc.post
@@ -17,9 +17,29 @@ exports.getAllComments = (req, res, next) => {
                 res.json(response);
            })
            .catch(err => {
-               res.status(500).json({
-                   error: err
+               res.json({
+                   message: "Error while getting all comments"
                });
+           });
+};
+
+exports.getPostComments = (req, res, next) => {
+    comment.find( {post: req.params.id})
+           .exec()
+           .then(data => {
+               var response = data.map(doc => {
+                   return {
+                       id: doc._id,
+                       text: doc.text,
+                       user: doc.user,
+                   };
+               });
+               res.json(response);
+           })
+           .catch(err => {
+                res.json({
+                    message: "Error while getting post comments"
+                });
            });
 };
 
@@ -54,6 +74,7 @@ exports.addComment = (req, res, next) => {
         post: req.body.post
     });
     req.id = newComment._id;
+    req.comment = newComment;
     newComment.save()
               .then(result => {
                   /*res.json({

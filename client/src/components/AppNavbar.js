@@ -10,18 +10,11 @@ import {
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions/authActions';
-import { PropTypes } from 'prop-types';
+import  PropTypes  from 'prop-types';
 import '../Styles/navbar.css';
 
 class AppNavbar extends Component {
 
-    componentDidMount() {
-        // let user = this.props.user;
-        // const token = localStorage.getItem(this.props.user);
-        // if(this.props.auth) {
-        //     this.props.checkUserStatus(user);
-        // }
-    }
 
     logout = (e) => {
         this.props.logoutUser();
@@ -31,13 +24,13 @@ class AppNavbar extends Component {
         if (this.props.auth) {
             return(
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
+                    <NavItem className="colorNav">
                         <Link className="link" to="/userPage">Welcome, {this.props.user} </Link>
                     </NavItem>
-                    <NavItem>
+                    <NavItem className="colorNav">
                         <Link className="link" to="/newPost">Create Post</Link>
                     </NavItem>
-                    <NavItem>
+                    <NavItem className="colorNav">
                         <Link className="link" to="/" onClick={this.logout}>Log Out</Link>
                     </NavItem>
                 </Nav>
@@ -46,10 +39,10 @@ class AppNavbar extends Component {
         else {
             return(
                 <Nav className="ml-auto" navbar>
-                    <NavItem>
+                    <NavItem className="colorNav">
                         <Link className="link" to="Login">Login </Link>
                     </NavItem>
-                    <NavItem>
+                    <NavItem className="colorNav">
                         <Link className="link" to="Register">Register</Link>
                     </NavItem>
                 </Nav>

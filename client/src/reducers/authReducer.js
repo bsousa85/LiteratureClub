@@ -1,5 +1,5 @@
-import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER, RESET_REDIRECT,
-RESET_MESSAGE, RESET_ERRORMESSAGE } from '../actions/types';
+import { LOGIN_USER, REGISTER_USER, REGISTER_ERROR, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER, 
+    UPDATE_USER_ERROR, RESET_REDIRECT, RESET_MESSAGE, RESET_ERRORMESSAGE } from '../actions/types';
 
 
 const initialState = {
@@ -32,8 +32,13 @@ export default function(state = initialState, action) {
         case REGISTER_USER:
             return {
                 ...state,
-                message: action.payload,
+                message: action.payload.message,
                 redirect: true
+            }
+        case REGISTER_ERROR:
+            return {
+                ...state,
+                errorMessage: action.payload.message
             }
         case LOGOUT_USER:
             localStorage.clear();
@@ -49,6 +54,11 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 message: action.payload.message
+            }
+        case UPDATE_USER_ERROR:
+            return {
+                ...state,
+                errorMessage: action.payload.message
             }
         case CHECK_USER:
             return {
