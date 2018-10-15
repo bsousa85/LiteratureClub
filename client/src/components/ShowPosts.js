@@ -53,7 +53,9 @@ class ShowPosts extends Component {
                 {posts.map((post) => (
                     <CSSTransition  timeout={500} classNames="fade">
                         <Container>
-                            <Post posts={post}  onDislikeClick={this.onDislikeClick} onLikeClick={this.onLikeClick} user={this.props.user} onSubmit={this.onSubmit} onChange={this.onChange} setPostId={this.setPostId} auth={this.props.auth} />
+                            <Post posts={post}  onDislikeClick={this.onDislikeClick} onLikeClick={this.onLikeClick} 
+                                  user={this.props.user} onSubmit={this.onSubmit} onChange={this.onChange} 
+                                  setPostId={this.setPostId} auth={this.props.auth} />
                             <br />
                             <br />
                         </Container>

@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {Container, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-import { loginUser } from '../actions/authActions';
-import { checkUserStatus } from '../actions/authActions';
+import {Container, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
+import { loginUser, resetRedirect, resetErrorMessage, resetMessage } from '../actions/authActions';
+import { Redirect } from 'react-router';
 
 
 export class Login extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      username : "",
-      password : ""
-    }
-  }
 
   onChange = (e) => {
     this.setState({ [e.target.name] : e.target.value});
@@ -28,10 +20,36 @@ export class Login extends Component {
     }
     this.props.loginUser(user);
   }
+
+  showMessage = () =>{
+    if(this.props.message && this.props.redirect) {
+      return(
+        <div>
+          <Alert color="success">{this.props.message}</Alert>
+          {this.props.resetRedirect()}
+          {this.props.resetMessage()}
+          {this.props.errorMessage !== '' ? this.props.resetErrorMessage() : null}
+          <Redirect to="/" />
+        </div>
+      )
+    }
+    else if(this.props.errorMessage && (!this.props.redirect)) {
+      return(
+        <div>
+          <Alert color="danger">{this.props.errorMessage}</Alert>
+        </div>
+      )
+    }
+    else {
+      return null;
+    }
+    
+  }
   
   render() {
     return (
       <Container>
+        {this.showMessage()}
         <h3>Sign In</h3>
         <Form className="form" onSubmit={this.onSubmit}>
           <Col>
@@ -55,12 +73,17 @@ export class Login extends Component {
 
 Login.PropTypes = {
   loginUser: PropTypes.func.isRequired,
-  checkUserStatus: PropTypes.func.isRequired,
+  resetRedirect: PropTypes.func.isRequired,
+  resetMessage: PropTypes.func.isRequired,
+  resetErrorMessage: PropTypes.func.isRequired,
   message: PropTypes.object,
+  errorMessage: PropTypes.object
 }
 
 const mapStateToProps = state => ({
-  message: state.auth.message
+  message: state.auth.message,
+  errorMessage: state.auth.errorMessage,
+  redirect: state.auth.redirect
 });
 
-export default connect(mapStateToProps, {loginUser, checkUserStatus})(Login);
+export default connect(mapStateToProps, {loginUser, resetRedirect, resetMessage, resetErrorMessage})(Login);

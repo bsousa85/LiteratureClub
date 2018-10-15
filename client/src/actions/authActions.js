@@ -1,4 +1,5 @@
-import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER } from './types';
+import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER, RESET_REDIRECT,
+RESET_MESSAGE, RESET_ERRORMESSAGE } from './types';
 import axios from 'axios';
 
 export const loginUser = (user) => dispatch => {
@@ -34,7 +35,25 @@ export const logoutUser = () => dispatch => {
     dispatch({
         type: LOGOUT_USER
     })
-}
+};
+
+export const resetRedirect = () => dispatch => {
+    dispatch({
+        type: RESET_REDIRECT
+    });
+};
+
+export const resetMessage = () => dispatch => {
+    dispatch({
+        type: RESET_MESSAGE
+    });
+};
+
+export const resetErrorMessage = () => dispatch => {
+    dispatch({
+        type: RESET_ERRORMESSAGE
+    });
+};
 
 export const deleteUser = (id) => dispatch => {
     axios
@@ -43,7 +62,7 @@ export const deleteUser = (id) => dispatch => {
             type: DELETE_USER,
             payload: res.data
         }));
-}
+};
 
 export const updateUser = (id, user) => dispatch => {
     axios
@@ -52,7 +71,7 @@ export const updateUser = (id, user) => dispatch => {
             type: UPDATE_USER,
             payload: res.data
         }));
-}
+};
 
 export const checkUserStatus = (token) => dispatch => {
     axios
@@ -71,4 +90,4 @@ export const checkUserStatus = (token) => dispatch => {
                 })
             }
         });
-}
+};

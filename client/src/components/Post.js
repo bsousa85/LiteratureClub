@@ -45,7 +45,7 @@ export class Post extends Component {
         </a>
       )
     }
-    else {
+    if(this.props.auth && (this.checkLike())) {
       return (
         <a onClick={() => {this.props.onDislikeClick(this.props.posts._id)}}>
           <img className="like" src="images/dislikebtn.png" height="30" width="30" />

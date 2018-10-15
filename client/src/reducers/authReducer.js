@@ -1,4 +1,5 @@
-import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER } from '../actions/types';
+import { LOGIN_USER, REGISTER_USER, LOGOUT_USER, DELETE_USER, LOGIN_ERROR, CHECK_USER, UPDATE_USER, RESET_REDIRECT,
+RESET_MESSAGE, RESET_ERRORMESSAGE } from '../actions/types';
 
 
 const initialState = {
@@ -6,7 +7,8 @@ const initialState = {
     message: "",
     userID: "",
     errorMessage: "",
-    authenticated: false
+    authenticated: false,
+    redirect: false
 }
 
 export default function(state = initialState, action) {
@@ -18,7 +20,8 @@ export default function(state = initialState, action) {
                 message: action.payload.message,
                 username: action.payload.user,
                 userID: action.payload.userID,
-                authenticated : true
+                authenticated : true,
+                redirect: true
             }
         case LOGIN_ERROR:
             return {
@@ -29,13 +32,14 @@ export default function(state = initialState, action) {
         case REGISTER_USER:
             return {
                 ...state,
-                message: action.payload
+                message: action.payload,
+                redirect: true
             }
         case LOGOUT_USER:
             localStorage.clear();
             return {
                 ...state,
-                authenticated : false
+                authenticated : false,
             }
         case DELETE_USER:
             return {
@@ -50,6 +54,21 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 authenticated : true
+            }
+        case RESET_REDIRECT:
+            return {
+                ...state,
+                redirect: false
+            }
+        case RESET_MESSAGE:
+            return {
+                ...state,
+                message: ""
+            }
+        case RESET_ERRORMESSAGE:
+            return {
+                ...state,
+                errorMessage: ""
             }
         default:
             return state;
