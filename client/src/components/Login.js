@@ -8,6 +8,15 @@ import { Redirect } from 'react-router';
 
 export class Login extends Component {
 
+  componentDidMount() {
+    this.setState( {
+      username: "",
+      password: ""
+    });
+    this.props.errorMessage !== '' ? this.props.resetErrorMessage() : null;
+    this.props.message !== '' ? this.props.resetMessage() : null;
+  }
+
   onChange = (e) => {
     this.setState({ [e.target.name] : e.target.value});
   }

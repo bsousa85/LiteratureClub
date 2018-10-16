@@ -73,6 +73,20 @@ export class Post extends Component {
     return formattedTime;
   }
 
+  formatVotes = () => {
+    var { likes } = this.props.posts;
+    if(likes === 1) {
+      return(
+        <p id="votes">{likes} user likes this post</p>
+      )
+    }
+    else {
+      return(
+        <p id="votes">{likes} users like this post</p>
+      )
+    }
+  }
+
   render() {
     return (
           <div className="post">
@@ -87,7 +101,7 @@ export class Post extends Component {
               </CardBody>
               <div className="like-section">
                 {this.showLikeButton()}
-                <p id="votes">{this.props.posts.likes} people like this post</p>
+                {this.formatVotes()}
                 <p id="time">posted on, {this.formatDate()}</p>
               </div>
                 {this.props.comments.map(({user, text, post, id}) => (

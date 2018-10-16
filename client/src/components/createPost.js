@@ -7,6 +7,15 @@ import { Redirect } from 'react-router';
 
 class createPost extends Component {
 
+    componentDidMount() {
+        this.setState({
+            title: "",
+            category: "",
+            text: ""
+        });
+        this.props.errorMessage !== '' ? this.props.resetPostErrorMessage() : null;
+        this.props.message !== '' ? this.props.resetPostMessage() : null;
+    }
 
     onChange = (e) => {
         this.setState({ [e.target.name] : e.target.value })

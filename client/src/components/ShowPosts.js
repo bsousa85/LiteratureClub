@@ -13,6 +13,7 @@ class ShowPosts extends Component {
   componentDidMount() {
       this.props.getPosts();
       this.props.getComments();
+      console.log("oioi");
   }
 
     componentWillReceiveProps(nextProps) {
@@ -56,6 +57,7 @@ class ShowPosts extends Component {
 
   render() {
     const { posts } = this.props.post;
+    console.log("what");
     return (
       <Container id="post-container">
           <ListGroup>

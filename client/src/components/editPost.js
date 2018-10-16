@@ -7,6 +7,17 @@ import { Redirect } from 'react-router';
 
 class editPost extends Component {
 
+    componentDidMount() {
+        const { postInfo } = this.props.location.state;
+        console.log("props");
+        console.log(this.props.location.state);
+        this.setState({
+            title: postInfo.title,
+            category: postInfo.category,
+            content: postInfo.text
+        });
+    }
+
 
     onChange = (e) => {
         this.setState({ [e.target.name] : e.target.value })
