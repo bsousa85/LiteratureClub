@@ -71,13 +71,13 @@ export class Login extends Component {
   }
 }
 
-Login.PropTypes = {
-  loginUser: PropTypes.func.isRequired,
-  resetRedirect: PropTypes.func.isRequired,
-  resetMessage: PropTypes.func.isRequired,
-  resetErrorMessage: PropTypes.func.isRequired,
-  message: PropTypes.object,
-  errorMessage: PropTypes.object
+Login.propTypes = {
+  loginUser: PropTypes.func,
+  resetRedirect: PropTypes.func,
+  resetMessage: PropTypes.func,
+  resetErrorMessage: PropTypes.func,
+  message: PropTypes.string,
+  errorMessage: PropTypes.string
 }
 
 const mapStateToProps = state => ({

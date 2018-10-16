@@ -1,5 +1,5 @@
 import { GET_POSTS, GET_USER_POSTS, ADD_POST, ADD_POST_ERROR, DELETE_POST, POSTS_LOADING, UPDATE_POST,
-     UPDATE_POST_ERROR, UPDATE_LIKES, RESET_REDIRECT, RESET_ERRORMESSAGE, RESET_MESSAGE, RESET_LIKED } from '../actions/types';
+     UPDATE_POST_ERROR, INCREMENT_LIKES, DECREMENT_LIKES, RESET_REDIRECT, RESET_ERRORMESSAGE, RESET_MESSAGE, RESET_LIKED } from '../actions/types';
 
 
 const initialState = {
@@ -9,7 +9,7 @@ const initialState = {
     message: "",
     errorMessage: "",
     redirect: false,
-    liked: false
+    liked: []
 };
 
 export default function(state=initialState, action) {
@@ -24,6 +24,7 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 userPosts: state.userPosts.filter(post => post._id !== action.payload),
+                liked: state.liked.filter(post => post !== action.payload),
                 message: action.payload.message
             }
         case ADD_POST:
@@ -59,11 +60,15 @@ export default function(state=initialState, action) {
                 ...state,
                 errorMessage: action.payload.message
             }
-        case UPDATE_LIKES:
+        case INCREMENT_LIKES:
             return {
                 ...state,
-                message: action.payload.message,
-                liked: true
+                liked: [action.payload, ...state.liked]
+            }
+        case DECREMENT_LIKES:
+            return {
+                ...state,
+                liked: state.liked.filter(post => post !== action.payload)
             }
         case RESET_REDIRECT:
             return {
@@ -83,7 +88,7 @@ export default function(state=initialState, action) {
         case RESET_LIKED:
             return {
                 ...state,
-                liked: false
+                liked: []
             }
         default:
             return state;

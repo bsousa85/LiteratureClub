@@ -68,7 +68,7 @@ class AppNavbar extends Component {
     }
 }
 
-AppNavbar.PropTypes = {
+AppNavbar.propTypes = {
     logoutUser: PropTypes.func.isRequired
 }
 

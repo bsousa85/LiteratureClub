@@ -24,8 +24,6 @@ class editPost extends Component {
     }
 
     showMessage = () => {
-        console.log("message : " + this.props.message);
-        console.log("redirect : " + this.props.redirect);
         if(this.props.message && this.props.redirect) {
           return(
             <div>
@@ -81,14 +79,14 @@ class editPost extends Component {
     }
 }
 
-editPost.PropTypes = {
+editPost.propTypes = {
     addPost : PropTypes.func,
     resetPostErrorMessage: PropTypes.func,
     resetPostMessage: PropTypes.func,
     resetPostRedirect: PropTypes.func,
-    message : PropTypes.object,
-    errorMEssage: PropTypes.object,
-    user : PropTypes.object
+    message : PropTypes.string,
+    errorMessage: PropTypes.string,
+    user : PropTypes.string
 }
 
 const mapStateToProps = state => ({

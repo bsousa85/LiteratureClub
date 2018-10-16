@@ -121,9 +121,9 @@ export class userPage extends Component {
                 <ListGroup>
                     <TransitionGroup>
                     {userPosts.map((post) => (
-                            <CSSTransition  timeout={500} classNames="fade">
+                            <CSSTransition key={post._id}  timeout={500} classNames="fade">
                                 <Container>
-                                    <Post posts={post} comments={this.props.comments}  user={this.props.user} userPage={this.state.userPage} />
+                                    <Post posts={post}  comments={this.props.comments}  user={this.props.user} userPage={this.state.userPage} />
                                     <Button>
                                         <Link className="link" to={{pathname:"/editPost",
                                         state: {postInfo : post}}}>Edit</Link>
@@ -146,18 +146,16 @@ export class userPage extends Component {
   }
 }
  
-userPage.PropTypes = {
+userPage.propTypes = {
     getUserPosts: PropTypes.func.isRequired,
-    deletePost: PropTypes.func.isRequired,
-    updateUser: PropTypes.func.isRequired,
-    resetMessage: PropTypes.func.isRequired,
-    resetErrorMessage: PropTypes.func.isRequired,
+    deletePost: PropTypes.func,
+    updateUser: PropTypes.func,
+    resetMessage: PropTypes.func,
+    resetErrorMessage: PropTypes.func,
     post: PropTypes.object.isRequired,
     user: PropTypes.object,
-    userMessage: PropTypes.object,
-    errorUserMessage: PropTypes.object,
-    postMessage: PropTypes.object,
-    errorPostMessage: PropTypes.object,
+    message: PropTypes.string,
+    errorMessage: PropTypes.string,
 }
 
 

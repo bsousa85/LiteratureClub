@@ -8,7 +8,7 @@ const initialState = {
     userID: "",
     errorMessage: "",
     authenticated: false,
-    redirect: false
+    redirect: false,
 }
 
 export default function(state = initialState, action) {

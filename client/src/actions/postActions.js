@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GET_POSTS, ADD_POST, ADD_POST_ERROR, DELETE_POST, POSTS_LOADING, GET_USER_POSTS, UPDATE_POST,
-     UPDATE_POST_ERROR, UPDATE_LIKES, RESET_REDIRECT, RESET_ERRORMESSAGE, RESET_MESSAGE, RESET_LIKED } from './types';
+     UPDATE_POST_ERROR, INCREMENT_LIKES, DECREMENT_LIKES, RESET_REDIRECT, RESET_ERRORMESSAGE, RESET_MESSAGE, RESET_LIKED } from './types';
 
 export const getPosts = () => dispatch => {
     dispatch(setPostsLoading());
@@ -73,8 +73,8 @@ export const incrementLikes = (id, post) => dispatch => {
     axios
         .put(`/posts/${id}`, post)
         .then(res => dispatch({
-            type: UPDATE_LIKES,
-            payload: res.data
+            type: INCREMENT_LIKES,
+            payload: id
         }));
 }
 
@@ -82,8 +82,8 @@ export const decrementLikes = (id, post) => dispatch => {
     axios
         .put(`/posts/like/${id}`, post)
         .then(res => dispatch({
-            type: UPDATE_LIKES,
-            payload: res.data
+            type: DECREMENT_LIKES,
+            payload: id
         }));
 }
 

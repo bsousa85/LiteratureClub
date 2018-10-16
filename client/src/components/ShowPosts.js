@@ -20,12 +20,12 @@ class ShowPosts extends Component {
             console.log("AA");
             this.props.getComments();
         }
-        if(this.props.post.liked !== nextProps.post.liked) {
+        if(this.props.post.liked.length !== nextProps.post.liked.length) {
             console.log("BB");
             this.props.getPosts();
-            this.props.resetLiked();
         } 
   }
+
 
   onChange = (e) => {
       this.setState({ [e.target.name] : e.target.value});
@@ -61,7 +61,7 @@ class ShowPosts extends Component {
           <ListGroup>
               <TransitionGroup>
                 {posts.map((post) => (
-                    <CSSTransition  timeout={500} classNames="fade">
+                    <CSSTransition  timeout={500} key={post._id} classNames="fade">
                         <Container>
                             <Post posts={post} comments={this.props.comments} onDislikeClick={this.onDislikeClick} onLikeClick={this.onLikeClick} 
                                   user={this.props.user} onSubmit={this.onSubmit} onChange={this.onChange} 
@@ -78,20 +78,18 @@ class ShowPosts extends Component {
   }
 }
 
-ShowPosts.PropTypes = {
+ShowPosts.propTypes = {
     getPosts: PropTypes.func.isRequired,
     getComments: PropTypes.func.isRequired,
     addComment: PropTypes.func,
-    post: PropTypes.object.isRequired,
+    post: PropTypes.object,
     user: PropTypes.object,
-    commentMessage: PropTypes.string,
 }
 
 const mapStateToProps = (state) => ({
     post: state.post,
     user: state.auth,
     auth: state.auth.authenticated,
-    //comment: state.comment.comments,
     comments: state.comment.comments
 });
 

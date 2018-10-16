@@ -78,15 +78,15 @@ class createPost extends Component {
     }
 }
 
-createPost.PropTypes = {
+createPost.propTypes = {
     addPost : PropTypes.func,
     resetPostMessage: PropTypes.func,
     resetPostErrorMessage: PropTypes.func,
     resetPostRedirect: PropTypes.func,
-    message : PropTypes.object,
-    errorMessage: PropTypes.object,
-    user: PropTypes.object,
-    redirect: PropTypes.object
+    message : PropTypes.string,
+    errorMessage: PropTypes.string,
+    user: PropTypes.string,
+    redirect: PropTypes.bool
 }
 
 const mapStateToProps = state => ({

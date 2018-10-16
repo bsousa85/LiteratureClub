@@ -14,7 +14,7 @@ class Home extends Component {
               <p className="lead">In here you can share your poetry and your short stories. Just create an account
               and start typing! </p>
             </Jumbotron>
-            </div>
+          </div>
           <ShowPosts />
         </div>
     );

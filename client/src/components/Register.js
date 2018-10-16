@@ -77,14 +77,14 @@ export class Register extends Component {
   }
 }
 
-Register.PropTypes = {
-  registerUser: PropTypes.func.isRequired,
+Register.propTypes = {
+  registerUser: PropTypes.func,
   resetMessage: PropTypes.func,
   resetErrorMessage: PropTypes.func,
   resetRedirect: PropTypes.func,
-  message: PropTypes.object,
-  ErrorMessage: PropTypes.object,
-  redirect: PropTypes.object
+  message: PropTypes.string,
+  ErrorMessage: PropTypes.message,
+  redirect: PropTypes.bool
 }
 
 const mapStateToProps = state => ({

@@ -21,6 +21,7 @@ export class Post extends Component {
       if(like._id === userID) {
         equal = true
       }
+      return false;
     });
     if(equal) {
       return true;
@@ -44,14 +45,14 @@ export class Post extends Component {
     if(this.props.auth && (!this.checkLike())) {
       return (
         <a onClick={() => {this.props.onLikeClick(this.props.posts._id)}}>
-          <img className="like" src="images/likebtn.png" height="30" width="30" />
+          <img className="like" src="images/likebtn.png" height="30" width="30" alt="likebtn" />
         </a>
       )
     }
     if(this.props.auth && (this.checkLike())) {
       return (
         <a onClick={() => {this.props.onDislikeClick(this.props.posts._id)}}>
-          <img className="like" src="images/dislikebtn.png" height="30" width="30" />
+          <img className="like" src="images/dislikebtn.png" height="30" width="30" alt="dislikebtn" />
         </a>
       )
     }
@@ -63,7 +64,7 @@ export class Post extends Component {
     const month = time.substr(5, 2);
     const day = time.substr(8, 2);
     const hours = time.substr(11, 2);
-    var aux = parseInt(hours);
+    var aux = parseInt(hours, 10);
     aux++;
     var newhours = aux.toString();
     const minutes = time.substr(14, 2);
@@ -89,9 +90,9 @@ export class Post extends Component {
                 <p id="votes">{this.props.posts.likes} people like this post</p>
                 <p id="time">posted on, {this.formatDate()}</p>
               </div>
-                {this.props.comments.map(({user, text, post}) => (
+                {this.props.comments.map(({user, text, post, id}) => (
                   post._id === this.props.posts._id ? 
-                  <div className="comment-section">
+                  <div key={id} className="comment-section">
                     <p id="comment-user">{user} : </p>
                     <p id="comment-text">{text}</p>
                   </div> : null
