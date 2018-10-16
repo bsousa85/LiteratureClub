@@ -9,7 +9,10 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Post from './Post';
 import { Link } from 'react-router-dom';
-import '../Styles/navbar.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import '../Styles/my-form.css';
+import '../Styles/my-tabs.css'
 
 
 export class userPage extends Component {
@@ -26,6 +29,23 @@ export class userPage extends Component {
           });
         }
       }
+
+      showConfirm = (id) => {
+        confirmAlert({
+          title: 'Confirm to Submit',
+          message: 'Are you sure you want to delete this post?',
+          buttons: [
+            {
+              label: 'Confirm',
+              onClick: () => { this.props.deletePost(id); }
+            },
+            {
+              label: 'Go Back',
+              onClick: () => {}
+            }
+          ]
+        })
+      };
  
       componentDidMount() {
           this.props.getUserPosts(this.props.user.username);
@@ -72,9 +92,9 @@ export class userPage extends Component {
   render() {
     const { userPosts } = this.props.post;
     return (
-      <div>
-        <Nav tabs>
-          <NavItem>
+      <div >
+        <Nav tabs className="my-tabs">
+          <NavItem className="my-item">
             <NavLink
               className={classnames({ active: this.state.activeTab === '1' })}
               onClick={() => { this.toggle('1'); }}
@@ -82,7 +102,7 @@ export class userPage extends Component {
               My Info
             </NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem className="my-item">
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
               onClick={() => { 
@@ -96,7 +116,7 @@ export class userPage extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-          <Container>
+          <Container className="my-form">
             {this.showUserMessage()}
           <h3>Change your settings</h3>
           <Form className="form" onSubmit={this.onSubmit}>
@@ -117,20 +137,21 @@ export class userPage extends Component {
           </Container>
           </TabPane>
           <TabPane tabId="2">
-            <Container>
+            <Container className="my-posts">
                 <ListGroup>
                     <TransitionGroup>
                     {userPosts.map((post) => (
                             <CSSTransition key={post._id}  timeout={500} classNames="fade">
                                 <Container>
                                     <Post posts={post}  comments={this.props.comments}  user={this.props.user} userPage={this.state.userPage} />
-                                    <Button>
+                                    <div className="my-buttons">
+                                      <Button >
                                         <Link className="link" to={{pathname:"/editPost",
                                         state: {postInfo : post}}}>Edit</Link>
-                                    </Button>
-                                    <Button onClick={() => { 
-                                      if(window.confirm('Are you sure you wish to delete this post?')) 
-                                      this.deleteUserPost(post._id)}}>Delete</Button>
+                                      </Button>
+                                      <Button onClick={() => {this.showConfirm(post._id)}}>Delete</Button>
+                                    </div>
+                                    
                                     <br />
                                     <br />
                                 </Container>

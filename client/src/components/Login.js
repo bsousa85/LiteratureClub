@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import {Container, Col, Form, FormGroup, Label, Input, Button, Alert } from 'reactstrap';
 import { loginUser, resetRedirect, resetErrorMessage, resetMessage } from '../actions/authActions';
 import { Redirect } from 'react-router';
+import '../Styles/my-form.css';
 
 
 export class Login extends Component {
@@ -47,7 +48,7 @@ export class Login extends Component {
         <div>
           <Alert color="danger">{this.props.errorMessage}</Alert>
         </div>
-      )
+      ) 
     }
     else {
       return null;
@@ -57,7 +58,7 @@ export class Login extends Component {
   
   render() {
     return (
-      <Container>
+      <Container className="my-form">
         {this.showMessage()}
         <h3>Sign In</h3>
         <Form className="form" onSubmit={this.onSubmit}>

@@ -32,8 +32,8 @@ export class Post extends Component {
   showAddComment = () => {
     if(this.props.auth) {
       return (
-                <div >
-                    <p id="comment-user">{this.props.user.username}</p>
+                <div id="addComment" >
+                    <p className="add-comment-user">{this.props.user.username}</p>
                     <textarea onChange={this.props.onChange} name="text" placeholder="Write some feedback!" />
                     <button onClick={this.onClick}>Submit</button>
                 </div>
@@ -44,8 +44,8 @@ export class Post extends Component {
   showLikeButton = () => {
     if(this.props.auth && (!this.checkLike())) {
       return (
-        <a onClick={() => {this.props.onLikeClick(this.props.posts._id)}}>
-          <img className="like" src="images/likebtn.png" height="30" width="30" alt="likebtn" />
+        <a className="like" onClick={() => {this.props.onLikeClick(this.props.posts._id)}}>
+          <img  src="images/likebtn.png" height="30" width="30" alt="likebtn" />
         </a>
       )
     }
@@ -92,8 +92,8 @@ export class Post extends Component {
           <div className="post">
             <Card>
               <CardBody>
-                <CardTitle>{this.props.posts.title}</CardTitle>
-                <CardSubtitle >{this.props.posts.category}</CardSubtitle>
+                <CardTitle className="title">{this.props.posts.title}</CardTitle>
+                <CardSubtitle className="category" >{this.props.posts.category}</CardSubtitle>
                 <CardSubtitle className="author">Author : {this.props.posts.author}</CardSubtitle>
               </CardBody>
               <CardBody>
@@ -104,14 +104,16 @@ export class Post extends Component {
                 {this.formatVotes()}
                 <p id="time">posted on, {this.formatDate()}</p>
               </div>
+              <div className="comment-section">
                 {this.props.comments.map(({user, text, post, id}) => (
                   post._id === this.props.posts._id ? 
-                  <div key={id} className="comment-section">
+                  <div key={id} className="comment">
                     <p id="comment-user">{user} : </p>
                     <p id="comment-text">{text}</p>
                   </div> : null
                 ))}
-                {this.showAddComment()}
+              </div>
+              {this.showAddComment()}
             </Card>
           </div>
     )

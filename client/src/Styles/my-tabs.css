@@ -1,0 +1,12 @@
+.my-tabs {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.my-item {
+    cursor: pointer;
+}
+
+.my-posts {
+    padding-top: 20px;
+}

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addPost, resetPostRedirect, resetPostMessage, resetPostErrorMessage } from '../actions/postActions';
 import { Redirect } from 'react-router';
+import '../Styles/my-form.css';
 
 class createPost extends Component {
 
@@ -58,7 +59,7 @@ class createPost extends Component {
 
     render() {
         return(
-                <Container>
+                <Container className="my-form">
                     {this.showMessage()}
                     <h3>Create your own Post!</h3>
                     <Form className="form" onSubmit={this.onSubmit}>

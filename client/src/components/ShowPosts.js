@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Container, ListGroup} from 'reactstrap';
-import { CSSTransition, TransitionGroup } from 'react-transition-group'; 
 import Post from './Post';
 import { connect } from 'react-redux'
 import { getPosts, incrementLikes, decrementLikes, resetLiked } from '../actions/postActions';
@@ -13,16 +12,13 @@ class ShowPosts extends Component {
   componentDidMount() {
       this.props.getPosts();
       this.props.getComments();
-      console.log("oioi");
   }
 
     componentWillReceiveProps(nextProps) {
         if(this.props.comments.length !== nextProps.comments.length) {
-            console.log("AA");
             this.props.getComments();
         }
         if(this.props.post.liked.length !== nextProps.post.liked.length) {
-            console.log("BB");
             this.props.getPosts();
         } 
   }
@@ -57,23 +53,18 @@ class ShowPosts extends Component {
 
   render() {
     const { posts } = this.props.post;
-    console.log("what");
     return (
       <Container id="post-container">
           <ListGroup>
-              <TransitionGroup>
                 {posts.map((post) => (
-                    <CSSTransition  timeout={500} key={post._id} classNames="fade">
-                        <Container>
+                        <Container key={post._id}>
                             <Post posts={post} comments={this.props.comments} onDislikeClick={this.onDislikeClick} onLikeClick={this.onLikeClick} 
                                   user={this.props.user} onSubmit={this.onSubmit} onChange={this.onChange} 
                                   setPostId={this.setPostId} auth={this.props.auth} />
                             <br />
                             <br />
                         </Container>
-                    </CSSTransition>
                 ))}
-              </TransitionGroup>
           </ListGroup>
       </Container>
     )

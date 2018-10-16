@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { updatePost, resetPostRedirect, resetPostMessage, resetPostErrorMessage } from '../actions/postActions';
 import { Redirect } from 'react-router';
+import '../Styles/my-form.css';
 
 class editPost extends Component {
 
@@ -61,7 +62,7 @@ class editPost extends Component {
     render() {
         const { postInfo } = this.props.location.state;
         return(
-                <Container>
+                <Container className="my-form">
                     {this.showMessage()}
                     <h3>Edit your Post</h3>
                     <Form className="form" onSubmit={this.onSubmit}>

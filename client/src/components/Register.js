@@ -4,6 +4,7 @@ import {Form, FormGroup, Label, Input, Button, Alert, Container, Col} from 'reac
 import { registerUser, resetErrorMessage, resetMessage, resetRedirect } from '../actions/authActions';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
+import '../Styles/my-form.css';
 
 export class Register extends Component {
 
@@ -58,7 +59,7 @@ export class Register extends Component {
 
   render() {
     return (
-        <Container>
+        <Container className="my-form">
           {this.showMessage()}
           <h3>Sign Up</h3>
           <Form className="form" onSubmit={this.onSubmit}>

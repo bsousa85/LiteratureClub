@@ -1,0 +1,12 @@
+.my-form {
+    width: 50%;
+    border: 3px solid black;
+    border-radius: 20px;
+    box-shadow:  5px 5px #ccc;
+    padding: 50px;
+}
+
+.my-buttons {
+    margin: 0 auto;
+    width: 55.5%;
+}

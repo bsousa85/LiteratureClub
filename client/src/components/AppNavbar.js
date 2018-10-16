@@ -15,6 +15,15 @@ import '../Styles/navbar.css';
 
 class AppNavbar extends Component {
 
+    state = {
+        isOpen : false
+    }
+
+    toggle = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    }
 
     logout = (e) => {
         this.props.logoutUser();
@@ -57,8 +66,8 @@ class AppNavbar extends Component {
                     <Navbar color="dark" dark expand="sm" className="mb-5">
                         <Container>
                             <NavbarBrand href="/">Literature Club</NavbarBrand>
-                            <NavbarToggler />
-                            <Collapse navbar>
+                            <NavbarToggler onClick={this.toggle} />
+                            <Collapse isOpen={this.state.isOpen} navbar>
                                 {this.navBarLink()}
                             </Collapse>
                         </Container>
