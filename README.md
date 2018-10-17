@@ -11,6 +11,8 @@ MONGO_DB_PW = ""
 
 MONGO_DB_USER = ""
 
+MONGO_LINK = ""
+
 SALT = 
 
 TOKEN_KEY = ""
