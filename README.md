@@ -17,6 +17,8 @@ SALT =
 
 TOKEN_KEY = ""
 
-2 - Install all the package dependencies with the "npm install" command
+2 - Go to server folder and install all the server package dependencies with the "npm install" command.
+
+3 - In the project folder run "npm run client-install" to install the client package dependencies.
 
 3 - In the project folder run the command "npm run dev" and concurrently will start the server and client.
