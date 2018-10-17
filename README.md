@@ -6,9 +6,13 @@ To get this working follow these steps :
 1- Add a .env in the project folder with these settings :
 
 PORT = 
+
 MONGO_DB_PW = ""
+
 MONGO_DB_USER = ""
+
 SALT = 
+
 TOKEN_KEY = ""
 
 2 - Install all the package dependencies with the "npm install" command
