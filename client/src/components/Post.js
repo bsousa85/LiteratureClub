@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../Styles/post.css';
-import { Card, CardSubtitle, CardBody, CardTitle, CardText} from 'reactstrap';
+import { Card, CardSubtitle, CardBody, CardTitle, CardText, Button} from 'reactstrap';
 
 
 export class Post extends Component {
@@ -33,9 +33,10 @@ export class Post extends Component {
     if(this.props.auth) {
       return (
                 <div id="addComment" >
-                    <p className="add-comment-user">{this.props.user.username}</p>
                     <textarea onChange={this.props.onChange} name="text" placeholder="Write some feedback!" />
-                    <button onClick={this.onClick}>Submit</button>
+                    <p>
+                      <Button onClick={this.onClick}>Submit</Button>
+                    </p> 
                 </div>
       )
     }

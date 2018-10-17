@@ -60,8 +60,8 @@ exports.getComment = (req, res, next) => {
                res.json(response);
            })
            .catch(err => {
-               res.status(500).json({
-                   error: err
+               res.json({
+                   message: "Error while getting comment"
                });
            });
 };
@@ -77,14 +77,11 @@ exports.addComment = (req, res, next) => {
     req.comment = newComment;
     newComment.save()
               .then(result => {
-                  /*res.json({
-                      message: 'Comment added successfully'
-                  }); */
                   next();
               }) 
               .catch(err => {
                   res.json({
-                      error: err
+                      message: "Error while adding comment"
                   });
               });
 };;
@@ -99,8 +96,8 @@ exports.updateComment = (req, res, next) => {
                });
            })
            .catch(err => {
-               res.status(500).json({
-                   error: err
+               res.json({
+                   message: "Error while updating comment"
                });
            });
 };
@@ -114,8 +111,8 @@ exports.deleteComment = (req, res, next) => {
                });
            })
            .catch(err => {
-               res.status(500).json({
-                   error : err
+               res.json({
+                   message: "Error while deleting comment"
                });
            });
 };

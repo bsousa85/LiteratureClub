@@ -21,11 +21,11 @@ exports.getAllPosts = (req, res, next) => {
                     comment: posts.comment
                 }
             })
-            res.status(200).json(response);
+            res.json(response);
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while getting all posts"
             });
         });
 };
@@ -51,8 +51,8 @@ exports.getUserPosts = (req, res, next) => {
             res.json(response);
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while get user posts"
             });
         });
 }
@@ -111,11 +111,11 @@ exports.getPost = (req, res, next) => {
                     comment: info.comment
                 }
             });
-            res.status(200).json(response);
+            res.json(response);
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while getting post"
             });
         });
 };
@@ -143,7 +143,7 @@ exports.updatePost = (req, res, next) => {
             }) 
             .catch(err => {
                 res.json({
-                    error: err
+                    message: "Error while trying to update post"
                 });
             }); 
     } 
@@ -208,14 +208,14 @@ exports.decrementLikes = (req, res, next) => {
                     });
                 })
                 .catch(err => {
-                    res.status(500).json({
-                        error: err
+                    res.json({
+                        message: "Error while updating like section. please try again"
                     });
                 }); 
         }) 
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while trying to decrement likes"
             }); 
         }); 
 }
@@ -224,13 +224,13 @@ exports.deletePost = (req, res, next) => {
     post.remove({_id: req.params.id})
         .exec()
         .then(result => {
-            res.status(200).json({
+            res.json({
                 message: 'Post deleted successfully'
             }); 
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while trying to delete post"
             });
         }); 
 };

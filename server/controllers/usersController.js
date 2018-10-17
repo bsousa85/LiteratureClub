@@ -18,11 +18,11 @@ exports.getUsers = (req, res, next) => {
                     }
                 })
             };
-            res.status(200).json(response);
+            res.json(response);
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while trying to get users"
             });
         });
 }
@@ -35,7 +35,7 @@ exports.signup = (req, res, next) => {
                 for(var i=0; i<data.length;i++) {
                     if(data[i].email == req.body.email) {
                         return res.json({
-                            message: 'Mail already in use'
+                            message: 'Email already in use'
                         });
                     }
                     if(data[i].username == req.body.username) {
@@ -140,8 +140,8 @@ exports.login = (req, res, next) => {
             });
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while trying to login"
             });
         });
 }
@@ -200,15 +200,15 @@ exports.updateUser = (req, res, next) => {
                         });
                     })
                     .catch(err => {
-                        res.status(500).json({
-                            error: err
+                        res.json({
+                            message: "Error while updating user info. Please try again"
                         });
                     });
             }
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: "Error while trying to update user info"
             });
         });
 }
@@ -217,13 +217,13 @@ exports.deleteUser = (req, res, next) => {
     user.remove({_id: req.params.id})
         .exec()
         .then(result => {
-            res.status(200).json({
+            res.json({
                 message: 'User deleted'
             });
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
+            res.json({
+                message: 'Error while trying to delete user'
             });
         });
 }
